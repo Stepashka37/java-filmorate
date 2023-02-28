@@ -1,14 +1,14 @@
 package ru.yandex.practicum.filmorate.module;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
-import lombok.Data;
-import ru.yandex.practicum.filmorate.controller.ValidationException;
 
+import lombok.Data;
+
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.util.Objects;
 
 @Data
