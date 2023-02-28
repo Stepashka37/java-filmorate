@@ -1,19 +1,20 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import com.google.gson.JsonObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
-@ControllerAdvice
+
 @RestControllerAdvice
 public class ExceptionApiHandler {
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<String> validationException(ValidationException exception) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new String(exception.getMessage()));
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ValidationException processValidationError(ValidationException ex) {
+        String result = ex.getMessage();
+        System.out.println("###########"+result);
+        return ex;
     }
 }
