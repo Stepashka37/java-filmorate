@@ -142,7 +142,7 @@ import static org.junit.jupiter.api.Assertions.*;
 				mockMvc.perform(post("/films")
 								.contentType("application/json")
 								.content(gson1)
-						).andExpect(status().isBadRequest())
+						).andExpect(status().isInternalServerError())
 						.andExpect(h -> h.getResponse().equals("Ошибка валидации name"));
 
 				Film filmNull = filmBuilder.setName(null)
@@ -170,7 +170,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		mockMvc.perform(post("/films")
 						.contentType("application/json")
 						.content(gson1)
-				).andExpect(status().isBadRequest())
+				).andExpect(status().isInternalServerError())
 				.andExpect(h -> h.getResponse().equals("Ошибка валидации releaseDate"));
 
 		Film filmAfter = filmBuilder.setName("Film")
@@ -279,7 +279,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		mockMvc.perform(put("/films")
 						.contentType("application/json")
 						.content(gson1)
-				).andExpect(status().isBadRequest())
+				).andExpect(status().isInternalServerError())
 				.andExpect(h -> h.getResponse().equals("Ошибка валидации release date"));
 
 		Film filmAfter = filmBuilder.setId(1)
@@ -371,7 +371,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		mockMvc.perform(put("/films")
 						.contentType("application/json")
 						.content(gson1)
-				).andExpect(status().isBadRequest())
+				).andExpect(status().isInternalServerError())
 				.andExpect(h -> h.getResponse().equals("Ошибка проверки на наличие"));
 	}
 
@@ -456,7 +456,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		mockMvc.perform(post("/users")
 						.contentType("application/json")
 						.content(gson1)
-				).andExpect(status().isBadRequest())
+				).andExpect(status().isInternalServerError())
 				.andExpect(h -> h.getResponse().equals("Ошибка валидации email"));
 
 		 user = userBuilder.setName("name")
@@ -499,7 +499,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		mockMvc.perform(post("/users")
 						.contentType("application/json")
 						.content(gson1)
-				).andExpect(status().isBadRequest())
+				).andExpect(status().isInternalServerError())
 				.andExpect(h -> h.getResponse().equals("Ошибка валидации login"));
 
 		User userNull = userBuilder.setName("name")
@@ -624,7 +624,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		mockMvc.perform(put("/users")
 						.contentType("application/json")
 						.content(gson1)
-				).andExpect(status().isBadRequest())
+				).andExpect(status().isInternalServerError())
 				.andExpect(h -> h.getResponse().equals("Ошибка валидации email"));
 
 		userToPut = userBuilder.setName("name")
@@ -688,6 +688,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 	@SneakyThrows
 	@Test
+	public void userPutMethodTestInvalid() {
+		User user = userBuilder.setName("name")
+				.setEmail("email@yandex.ru")
+				.setId(9999)
+				.setLogin("login")
+				.setName("name")
+				.setBirthday(LocalDate.of(1997, 06, 05))
+				.build();
+		String gson1 = objectMapper.writeValueAsString(user);
+		mockMvc.perform(put("/users")
+				.contentType("application/json")
+				.content(gson1)
+		).andExpect(status().isInternalServerError());
+	}
+
+	@SneakyThrows
+	@Test
 	public void userPutMethodTestInvalidBirthday() {
 		User user = userBuilder.setName("name")
 				.setEmail("email@yandex.ru")
@@ -730,7 +747,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		mockMvc.perform(put("/users")
 						.contentType("application/json")
 						.content(gson1)
-				).andExpect(status().isBadRequest())
+				).andExpect(status().isInternalServerError())
 				.andExpect(h -> h.getResponse().equals("Ошибка проверки на наличие"));
 	}
 

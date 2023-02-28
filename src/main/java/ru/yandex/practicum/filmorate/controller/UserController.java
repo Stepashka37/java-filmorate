@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@ResponseBody
 @RequestMapping("/users")
 public class UserController {
     private Map<Integer, User> users = new HashMap<>();
@@ -48,6 +49,7 @@ public class UserController {
     }
 
     @PutMapping()
+    @ResponseBody
     public User updateUser(@Valid @RequestBody User user) throws ValidationException {
         if ( !user.getEmail().contains("@") || user.getEmail().isBlank()) {
             log.warn("Ошибка валидации email");
@@ -60,7 +62,7 @@ public class UserController {
             throw new ValidationException("Дата рождения не может быть в будущем");
         } else if (!users.containsKey(user.getId())) {
             log.warn("Ошибка проверки на наличие");
-            throw new ValidationException("Пользователь с id" + user.getId() + " не найден");
+            throw new ValidationException("USer id" + user.getId() + " not found");
         } else if (user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
