@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.module;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
+@Builder
 public class User {
     private int id;
     @Email
@@ -54,7 +56,7 @@ public class User {
         this.birthday = birthday;
     }
 
-    public static class UserBuilder {
+   /* public static class UserBuilder {
         private int id;
         @Email
         private String email;
@@ -95,5 +97,5 @@ public class User {
         public User build() {
             return new User(id,email,login, name,birthday);
         }
-    }
+    }*/
 }

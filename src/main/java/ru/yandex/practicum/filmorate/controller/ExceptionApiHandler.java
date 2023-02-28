@@ -13,8 +13,6 @@ public class ExceptionApiHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ValidationException processValidationError(ValidationException ex) {
-        String result = ex.getMessage();
-        System.out.println("###########"+result);
         return ex;
     }
 }

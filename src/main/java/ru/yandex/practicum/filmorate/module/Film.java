@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.module;
 
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -11,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
+@Builder
 public class Film {
     private int id;
     @NotNull
@@ -18,10 +21,10 @@ public class Film {
     @Size(min = 0, max = 200)
     private String description;
     @Past
-    @NotNull
+    @NonNull
     private LocalDate releaseDate;
     @Positive
-    @NotNull
+    @NonNull
     private long duration;
 
 
@@ -58,7 +61,7 @@ public class Film {
                 '}';
     }
 
-    public static class FilmBuilder {
+   /* public static class FilmBuilder {
         private int id;
         @NotNull
         private String name;
@@ -103,6 +106,6 @@ public class Film {
 
         public Film build() {
             return new Film(id, name, description, releaseDate, duration);
-        }
+        }*/
     }
-}
+
