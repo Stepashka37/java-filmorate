@@ -2,29 +2,19 @@ package ru.yandex.practicum.filmorate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.jayway.jsonpath.JsonPath;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.controller.ValidationException;
 import ru.yandex.practicum.filmorate.module.Film;
 import ru.yandex.practicum.filmorate.module.User;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -393,7 +383,7 @@ public void clear(){
                 .build();
 
         User userCreated = User.builder().name("name")
-                .id(1)
+                .id(1L)
                 .email("email@yandex.ru")
                 .login("login")
                 .birthday(LocalDate.of(1997, 06, 05))
@@ -404,7 +394,7 @@ public void clear(){
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(gson1)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isCreated());
 
         MvcResult result = mockMvc.perform(get("/users")
                         .contentType("application/json"))
@@ -438,7 +428,7 @@ public void clear(){
                 ).andDo(h -> {
                     System.out.println(h.getResponse());
                 })
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
 
@@ -552,7 +542,7 @@ public void clear(){
         MvcResult result1 = mockMvc.perform(post("/users")
                         .contentType("application/json")
                         .content(gson1)
-                ).andExpect(status().isOk())
+                ).andExpect(status().isCreated())
                 .andReturn();
 
         User user2 = User.builder().name(null)
@@ -566,11 +556,11 @@ public void clear(){
         MvcResult result2 = mockMvc.perform(post("/users")
                         .contentType("application/json")
                         .content(gson2)
-                ).andExpect(status().isOk())
+                ).andExpect(status().isCreated())
                 .andReturn();
 
         User userCreated = User.builder().name("login")
-                .id(2)
+                .id(2L)
                 .email("email@yandex.ru")
                 .login("login")
                 .name("name")
@@ -580,7 +570,7 @@ public void clear(){
         User fromGson1 = objectMapper.readValue(result1.getResponse().getContentAsString(), User.class);
         User fromGson2 = objectMapper.readValue(result2.getResponse().getContentAsString(), User.class);
         assertEquals(userCreated, fromGson1);
-        userCreated.setId(3);
+        userCreated.setId(3L);
         assertEquals(userCreated, fromGson2);
 
 
@@ -599,10 +589,10 @@ public void clear(){
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(gson1)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isCreated());
 
         User userToPut = User.builder().name("name")
-                .id(1)
+                .id(1L)
                 .email("email.yandex.ru")
                 .login("login")
                 .name("name")
@@ -616,7 +606,7 @@ public void clear(){
                 .andExpect(h -> h.getResponse().equals("Ошибка валидации email"));
 
         userToPut = User.builder().name("name")
-                .id(1)
+                .id(1L)
                 .email("")
                 .login("login")
                 .name("name")
@@ -630,7 +620,7 @@ public void clear(){
                 .andExpect(h -> h.getResponse().equals("Ошибка валидации email"));
 
         userToPut = User.builder().name("name")
-                .id(1)
+                .id(1L)
                 .email("это-неправильный?эмейл@")
                 .login("login")
                 .name("name")
@@ -657,10 +647,10 @@ public void clear(){
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(gson1)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isCreated());
 
         User userInvalidLogin = User.builder().name("name")
-                .id(1)
+                .id(1L)
                 .email("email.yandex.ru")
                 .login("")
                 .name("name")
@@ -674,7 +664,7 @@ public void clear(){
                 .andExpect(h -> h.getResponse().equals("Ошибка валидации login"));
 
         userInvalidLogin = User.builder().name("name")
-                .id(1)
+                .id(1L)
                 .email("email.yandex.ru")
                 .login("login with space")
                 .name("name")
@@ -693,7 +683,7 @@ public void clear(){
     public void userPutMethodTestInvalid() {
         User user = User.builder().name("name")
                 .email("email@yandex.ru")
-                .id(9999)
+                .id(9999L)
                 .login("login")
                 .name("name")
                 .birthday(LocalDate.of(1997, 06, 05))
@@ -718,10 +708,10 @@ public void clear(){
         mockMvc.perform(post("/users")
                 .contentType("application/json")
                 .content(gson1)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isCreated());
 
         User userInvalidBirthday = User.builder().name("name")
-                .id(1)
+                .id(1L)
                 .email("email@yandex.ru")
                 .login("login")
                 .name("name")
@@ -739,7 +729,7 @@ public void clear(){
     @Test
     public void userPutMethodTestInvalidPresence() {
         User user = User.builder().name("name")
-                .id(10)
+                .id(10L)
                 .email("email@yandex.ru")
                 .login("login")
                 .name("name")
