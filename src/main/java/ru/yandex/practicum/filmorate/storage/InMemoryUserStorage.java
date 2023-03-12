@@ -1,12 +1,10 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.module.User;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Component
@@ -25,7 +23,7 @@ public class InMemoryUserStorage implements UsersStorage {
 
 
     @Override
-    public User addUser(User user) throws ValidationException {
+    public User addUser(User user) {
 
         validateUser(user);
         ++genId;
@@ -44,11 +42,11 @@ public class InMemoryUserStorage implements UsersStorage {
     }
 
     @Override
-    public User updateUser(User user) throws UserNotFoundException {
+    public User updateUser(User user) {
         validateUser(user);
         if (!users.containsKey(user.getId())) {
 
-            throw new UserNotFoundException("Пользователь с id" + user.getId() + " not found");
+            throw new UserNotFoundException("Пользователь с id" + user.getId() + " не найден");
         }
         if (user.getFriends() == null) {
             user.setFriends(new HashSet<>());
@@ -58,15 +56,8 @@ public class InMemoryUserStorage implements UsersStorage {
     }
 
     private void validateUser(User user){
-        if ( user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-
-            throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @");
-        } else if (user.getLogin().isBlank() || user.getLogin().contains(" ")) {
-
+         if (user.getLogin().contains(" ")) {
             throw new ValidationException("Логин не может быть пустым и содержать пробелы");
-        } else if (user.getBirthday().isAfter(LocalDate.now())) {
-
-            throw new ValidationException("Дата рождения не может быть в будущем");
         } else if (user.getName() == (null) || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -75,6 +66,14 @@ public class InMemoryUserStorage implements UsersStorage {
     @Override
     public void deleteAllUsers(){
         users.clear();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (!users.containsKey(id)) {
+            throw new UserNotFoundException("Пользователь с id" + id + " не найден");
+        }
+        users.remove(id);
     }
 
 

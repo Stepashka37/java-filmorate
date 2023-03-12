@@ -6,20 +6,18 @@ import ru.yandex.practicum.filmorate.module.Film;
 import ru.yandex.practicum.filmorate.storage.FilmsStorage;
 import ru.yandex.practicum.filmorate.storage.UsersStorage;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
 public class FilmService {
-    //private UsersStorage usersStorage;
     private FilmsStorage filmsStorage;
     @Autowired
     public FilmService(FilmsStorage filmsStorage) {
         this.filmsStorage = filmsStorage;
     }
 
-    /*@Autowired
-    public FilmService(UsersStorage usersStorage) {
-        this.usersStorage = usersStorage;
-    }*/
+
 
     public List<Film> getFilms() {
         return filmsStorage.getFilms();
@@ -34,20 +32,42 @@ public class FilmService {
     }
 
     public void likeFilm(Long id, Long userId) {
-    filmsStorage.likeFilm(id,userId);
+        Film film = filmsStorage.getFilm(id);
+        film.likeFilm(userId);
     }
 
     public void removeLike(Long id, Long userId) {
-        filmsStorage.removeLike(id, userId);
+        Film film = filmsStorage.getFilm(id);
+        film.removeLike(userId);
+
     }
 
     public List<Film> getMostLikedFilms(int count) {
-        return filmsStorage.getMostLikedFilms(count);
+        if (filmsStorage.getFilms().isEmpty()) {
+            return new ArrayList<>();
+        }
+        if (filmsStorage.getFilms().size() <= count) {
+            return new ArrayList<>(filmsStorage.getFilms());
+        }
+        List<Film> values = filmsStorage.getFilms().stream()
+                .sorted((e1, e2) ->
+        Integer.compare(e1.getLikesNumber(), e2.getLikesNumber()))
+                .collect(Collectors.toList());
+
+        Collections.reverse(values);
+        return values.subList(0, count);
     }
 
     public Film getFilm(Long id) {
         return filmsStorage.getFilm(id);
     }
 
+    public void deleteFilm(Long id) {
+        filmsStorage.deleteFilm(id);
+    }
+
+    public void deleteAllFilms(){
+        filmsStorage.deleteAllFilms();
+    }
 
 }

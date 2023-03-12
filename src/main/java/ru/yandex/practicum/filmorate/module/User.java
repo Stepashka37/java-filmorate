@@ -1,15 +1,10 @@
 package ru.yandex.practicum.filmorate.module;
 
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
-import lombok.Value;
+import lombok.*;
 
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 import java.util.HashSet;
@@ -21,13 +16,16 @@ import java.util.Set;
 public class User {
 @Singular
      private Set<Long> friends;
+    @Positive (message = "id должен быть больше нуля")
     private Long id;
-    @Email
+    @Email(message = "Email не может быть пустым и должен соответствовать следующему формату: email@email.ru")
+    @NonNull
     private String email;
-    @NotNull
+    @NonNull
+    @NotBlank
     private String login;
     private String name;
-    @PastOrPresent
+    @PastOrPresent (message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
 
 

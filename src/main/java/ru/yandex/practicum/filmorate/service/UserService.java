@@ -38,6 +38,14 @@ public class UserService {
         return storage.getUser(id);
     }
 
+    public void deleteUser(Long id) {
+        storage.deleteUser(id);
+    }
+
+    public void deleteAllUsers(){
+        storage.deleteAllUsers();
+    }
+
     public void addFriend(Long id, Long idToAdd){
         /*if (storage.getUser(id) == null) {
             throw new UserNotFoundException("Пользователь с id " + id + " не найден");

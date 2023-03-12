@@ -7,10 +7,7 @@ import lombok.NonNull;
 import lombok.Singular;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
@@ -20,15 +17,17 @@ import java.util.Set;
 public class Film {
     @Singular
     private Set<Long> likes;
+    @Positive(message = "id должен быть больше нуля")
     private Long id;
-    @NotNull
+    @NonNull
+    @NotBlank (message = "Имя не может быть пустым")
     private String name;
-    @Size(min = 0, max = 200)
+    @Size(min = 0, max = 200, message = "Максимальная длина описания - 200 символов")
     private String description;
-    @Past
+    @Past (message = "Дата выхода фильма не может быть в будущем")
     @NonNull
     private LocalDate releaseDate;
-    @Positive
+    @Positive (message = "Продолжительность фильма не может быть отрицательной")
     @NonNull
     private long duration;
 

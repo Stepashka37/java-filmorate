@@ -25,38 +25,51 @@ public class FilmController {
 
     @GetMapping
     public List<Film> getFilms() {
+        List<Film> films = filmService.getFilms();
         log.info("Получили список всех фильмов");
-        return filmService.getFilms();
+        return films;
     }
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) throws ValidationException {
-        log.info("Добавили фильм с id{}", film.getId());
-        return filmService.addFilm(film);
+    public Film addFilm(@Valid @RequestBody Film film) {
+        Film addedFilm = filmService.addFilm(film);
+        log.info("Добавили фильм с id{}", addedFilm.getId());
+        return addedFilm;
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        Film updatedFilm = filmService.updateFilm(film);
 
-        log.info("Обновили фильм с id{}", film.getId());
-        return filmService.updateFilm(film);
+        log.info("Обновили фильм с id{}", updatedFilm.getId());
+        return updatedFilm;
+    }
+
+    @DeleteMapping()
+    public void deleteAllFilms() {
+        filmService.deleteAllFilms();
+        log.info("Все фильмы были удален");
+
     }
 
     @PutMapping("/{id}/like/{userId}")
     public void likeFilm(@PathVariable Long id, @PathVariable Long userId) {
         filmService.likeFilm(id, userId);
+        log.info("Пользователь с id{}",userId + " поставил лайк фильму с id" + id);
 
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable Long id, @PathVariable Long userId) {
         filmService.removeLike(id, userId);
-
+        log.info("Пользователь с id{}",userId + " убрал лайк фильму с id"+ id);
     }
 
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable Long id) {
-        return filmService.getFilm(id);
+        Film film = filmService.getFilm(id);
+        log.info("Получили фильм с id{}",id);
+        return film;
     }
 
     @GetMapping(value = {"/popular?count={count}", "/popular"})
@@ -64,10 +77,16 @@ public class FilmController {
         if (count == null) {
             count = 10;
         }
-        return filmService.getMostLikedFilms(count);
+        List<Film> popularFilms = filmService.getMostLikedFilms(count);
+        log.info("Получили список из " + count + " наиболее популярных фильмов");
+        return popularFilms;
     }
 
-
+    @DeleteMapping("/{id}")
+    public void deleteFilm(@PathVariable Long id) {
+        filmService.deleteFilm(id);
+        log.info("Удалили фильм с id{}", id);
+    }
 
 
 }
