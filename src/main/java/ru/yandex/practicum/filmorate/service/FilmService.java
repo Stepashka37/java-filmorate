@@ -4,19 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.module.Film;
 import ru.yandex.practicum.filmorate.storage.FilmsStorage;
-import ru.yandex.practicum.filmorate.storage.UsersStorage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
     private FilmsStorage filmsStorage;
+
     @Autowired
     public FilmService(FilmsStorage filmsStorage) {
         this.filmsStorage = filmsStorage;
     }
-
 
 
     public List<Film> getFilms() {
@@ -51,7 +52,7 @@ public class FilmService {
         }
         List<Film> values = filmsStorage.getFilms().stream()
                 .sorted((e1, e2) ->
-        Integer.compare(e1.getLikesNumber(), e2.getLikesNumber()))
+                        Integer.compare(e1.getLikes().size(), e2.getLikes().size()))
                 .collect(Collectors.toList());
 
         Collections.reverse(values);
@@ -66,7 +67,7 @@ public class FilmService {
         filmsStorage.deleteFilm(id);
     }
 
-    public void deleteAllFilms(){
+    public void deleteAllFilms() {
         filmsStorage.deleteAllFilms();
     }
 

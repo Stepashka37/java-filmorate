@@ -1,31 +1,35 @@
 package ru.yandex.practicum.filmorate.module;
 
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.Singular;
 
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
-
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Data
 @Builder
 public class User {
-@Singular
-     private Set<Long> friends;
-    @Positive (message = "id должен быть больше нуля")
+    @Singular
+    private Set<Long> friends;
+    @Positive(message = "id должен быть больше нуля")
     private Long id;
     @Email(message = "Email не может быть пустым и должен соответствовать следующему формату: email@email.ru")
     @NonNull
+    @NotBlank
     private String email;
     @NonNull
     @NotBlank
     private String login;
     private String name;
-    @PastOrPresent (message = "Дата рождения не может быть в будущем")
+    @PastOrPresent(message = "Дата рождения не может быть в будущем")
     private LocalDate birthday;
 
 
@@ -65,4 +69,6 @@ public class User {
     public void deleteFriend(Long id) {
         friends.remove(id);
     }
+
+
 }

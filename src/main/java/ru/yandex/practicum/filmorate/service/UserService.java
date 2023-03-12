@@ -2,9 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.module.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UsersStorage;
 
 import java.util.ArrayList;
@@ -22,15 +20,15 @@ public class UserService {
         this.storage = storage;
     }
 
-    public List<User> getUsers(){
-       return storage.getUsers();
+    public List<User> getUsers() {
+        return storage.getUsers();
     }
 
-    public User addUser(User user){
+    public User addUser(User user) {
         return storage.addUser(user);
     }
 
-    public User updateUser(User user){
+    public User updateUser(User user) {
         return storage.updateUser(user);
     }
 
@@ -42,31 +40,21 @@ public class UserService {
         storage.deleteUser(id);
     }
 
-    public void deleteAllUsers(){
+    public void deleteAllUsers() {
         storage.deleteAllUsers();
     }
 
-    public void addFriend(Long id, Long idToAdd){
-        /*if (storage.getUser(id) == null) {
-            throw new UserNotFoundException("Пользователь с id " + id + " не найден");
-        }
-        if (storage.getUser(idToAdd) == null) {
-            throw new UserNotFoundException("Пользователь с id " + idToAdd + " не найден");
-        }*/
+    public void addFriend(Long id, Long idToAdd) {
+
         User user = storage.getUser(id);
         User userToAdd = storage.getUser(idToAdd);
-       user.addFriend(idToAdd);
-       userToAdd.addFriend(id);
+        user.addFriend(idToAdd);
+        userToAdd.addFriend(id);
 
     }
 
-    public void deleteFriend(Long id, Long idToDelete){
-        /*if (storage.getUser(id) == null) {
-            throw new UserNotFoundException("Пользователь с id " + id + " не найден");
-        }
-        if (storage.getUser(idToDelete) == null) {
-            throw new UserNotFoundException("Пользователь с id " + idToDelete + " не найден");
-        }*/
+    public void deleteFriend(Long id, Long idToDelete) {
+
         User user = storage.getUser(id);
         User userToDelete = storage.getUser(idToDelete);
         user.deleteFriend(idToDelete);
@@ -75,9 +63,7 @@ public class UserService {
 
     public List<User> showFriends(Long id) {
         List<User> result = new ArrayList<>();
-        /*if (storage.getUser(id) == null) {
-            throw new UserNotFoundException("Пользователь с id " + id + " не найден");
-        }*/
+
         User user = storage.getUser(id);
         if (user.getFriends().size() == 0) {
             return new ArrayList<>();
@@ -92,12 +78,6 @@ public class UserService {
 
     public List<User> showCommonFriends(Long idNumb1, Long idNumb2) {
         List<User> result = new ArrayList<>();
-        /*if (storage.getUser(idNumb1) == null) {
-            throw new UserNotFoundException("Пользователь с id " + idNumb1 + " не найден");
-        }
-        if (storage.getUser(idNumb2) == null) {
-            throw new UserNotFoundException("Пользователь с id " + idNumb2 + " не найден");
-        }*/
         User userNumb1 = storage.getUser(idNumb1);
         User userNumb2 = storage.getUser(idNumb2);
         if (userNumb1.getFriends() == null || userNumb2.getFriends() == null) {
@@ -108,10 +88,8 @@ public class UserService {
 
 
         for (Long id : intersectSet) {
-             result.add(storage.getUser(id));
-
+            result.add(storage.getUser(id));
         }
         return result;
-
     }
 }

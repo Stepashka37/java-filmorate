@@ -20,8 +20,6 @@ public class InMemoryUserStorage implements UsersStorage {
     }
 
 
-
-
     @Override
     public User addUser(User user) {
 
@@ -55,8 +53,8 @@ public class InMemoryUserStorage implements UsersStorage {
         return users.get(user.getId());
     }
 
-    private void validateUser(User user){
-         if (user.getLogin().contains(" ")) {
+    private void validateUser(User user) {
+        if (user.getLogin().contains(" ")) {
             throw new ValidationException("Логин не может быть пустым и содержать пробелы");
         } else if (user.getName() == (null) || user.getName().isBlank()) {
             user.setName(user.getLogin());
@@ -64,8 +62,9 @@ public class InMemoryUserStorage implements UsersStorage {
     }
 
     @Override
-    public void deleteAllUsers(){
+    public void deleteAllUsers() {
         users.clear();
+        genId = 0L;
     }
 
     @Override

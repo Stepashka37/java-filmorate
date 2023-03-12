@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.module.User;
 
@@ -15,7 +14,6 @@ public interface UsersStorage {
     User updateUser(User user);
 
     void deleteAllUsers();
-
 
     User getUser(Long id);
 

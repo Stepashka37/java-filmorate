@@ -14,22 +14,19 @@ public class InMemoryFilmStorage implements FilmsStorage {
     private Long genId = 0L;
 
 
-        @Override
-        public Film getFilm(Long id){
-            if (!films.containsKey(id)) {
-                throw new FilmNotFoundException("Фильм с id " + id + " не найден");
-            }
-        return films.get(id);
-        }
-
-
     @Override
-    public List<Film> getFilms(){
-        return new ArrayList<>(films.values());
+    public Film getFilm(Long id) {
+        if (!films.containsKey(id)) {
+            throw new FilmNotFoundException("Фильм с id " + id + " не найден");
+        }
+        return films.get(id);
     }
 
 
-
+    @Override
+    public List<Film> getFilms() {
+        return new ArrayList<>(films.values());
+    }
 
 
     @Override
@@ -59,22 +56,22 @@ public class InMemoryFilmStorage implements FilmsStorage {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             throw new ValidationException("Дата релиза - не раньше 28 декабря 1895 года");
         }
+
     }
 
     @Override
-    public void deleteAllFilms(){
+    public void deleteAllFilms() {
         films.clear();
+        genId = 0L;
     }
 
     @Override
-    public void deleteFilm(Long id){
+    public void deleteFilm(Long id) {
         if (!films.containsKey(id)) {
             throw new FilmNotFoundException("Фильм с id " + id + " не найден");
         }
         films.remove(id);
     }
-
-
 
 
 }
