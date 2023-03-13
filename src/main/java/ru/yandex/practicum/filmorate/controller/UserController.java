@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.module.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Slf4j
@@ -58,14 +59,10 @@ public class UserController {
     public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
         usersService.addFriend(id, friendId);
         log.info("Пользователь с id{}", friendId + " добавился в друзья к пользователю с id" + id);
-        System.out.println(usersService.showFriends(id).size());
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
-        if (id <= 0 || friendId <= 0) {
-            throw new ValidationException("id должен быть больше или равен 0");
-        }
+    public void deleteFriend(@PathVariable @Min(1) Long id, @PathVariable @Min(1) Long friendId) {
         if (id == null || friendId == null) {
             throw new ValidationException("не указан id");
         }

@@ -22,7 +22,6 @@ public class Film {
     private Set<Long> likes;
     @Positive(message = "id должен быть больше нуля")
     private Long id;
-    @NonNull
     @NotBlank(message = "Имя не может быть пустым")
     private String name;
     @Size(min = 0, max = 200, message = "Максимальная длина описания - 200 символов")

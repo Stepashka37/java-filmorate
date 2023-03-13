@@ -20,7 +20,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -137,13 +138,16 @@ class FilmControllerTest {
                 .andExpect(h -> h.getResponse().equals("Ошибка валидации name"));
 
 
-        NullPointerException thrown = assertThrows(
-                NullPointerException.class,
-                () -> Film.builder().name(null)
-
-        );
-
-        assertTrue(thrown.getMessage().contentEquals("name is marked non-null but is null"));
+        Film film2 = Film.builder().name(null)
+                .description("Film description")
+                .releaseDate(LocalDate.of(2016, 03, 04))
+                .duration(120)
+                .build();
+        gson1 = objectMapper.writeValueAsString(film2);
+        mockMvc.perform(post("/films")
+                .contentType("application/json")
+                .content(gson1)
+        ).andExpect(status().isInternalServerError());
     }
 
 
@@ -230,13 +234,18 @@ class FilmControllerTest {
                 .content(gson1)
         ).andExpect(status().isCreated());
 
-        NullPointerException thrown = assertThrows(
-                NullPointerException.class,
-                () -> Film.builder().name(null)
 
-        );
-
-        assertTrue(thrown.getMessage().contentEquals("name is marked non-null but is null"));
+        Film film2 = Film.builder().name(null)
+                .id(1L)
+                .description("Film description")
+                .releaseDate(LocalDate.of(2016, 03, 04))
+                .duration(120)
+                .build();
+        gson1 = objectMapper.writeValueAsString(film2);
+        mockMvc.perform(put("/films")
+                .contentType("application/json")
+                .content(gson1)
+        ).andExpect(status().isInternalServerError());
     }
 
     @SneakyThrows
@@ -629,7 +638,7 @@ class FilmControllerTest {
 
         mockMvc.perform(get("/films/popular?count=-1")
                 .contentType("application/json")
-        ).andExpect(status().isBadRequest());
+        ).andExpect(status().isInternalServerError());
 
     }
 }

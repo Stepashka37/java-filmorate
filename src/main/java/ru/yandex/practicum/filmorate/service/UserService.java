@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.module.User;
 import ru.yandex.practicum.filmorate.storage.UsersStorage;
@@ -11,14 +11,10 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    private UsersStorage storage;
-
-    @Autowired
-    public UserService(UsersStorage storage) {
-        this.storage = storage;
-    }
+    private final UsersStorage storage;
 
     public List<User> getUsers() {
         return storage.getUsers();

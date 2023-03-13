@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.module;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 import lombok.Singular;
 
 import javax.validation.constraints.Email;
@@ -22,10 +21,10 @@ public class User {
     @Positive(message = "id должен быть больше нуля")
     private Long id;
     @Email(message = "Email не может быть пустым и должен соответствовать следующему формату: email@email.ru")
-    @NonNull
+
     @NotBlank
     private String email;
-    @NonNull
+
     @NotBlank
     private String login;
     private String name;
